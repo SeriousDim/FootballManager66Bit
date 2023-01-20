@@ -5,7 +5,7 @@ export type Footballer = {
   name: string,
   surname: string,
   sex: Sex,
-  birthDate: Date | null,
+  birthDate?: Date | string,
   team: string,
   country: string
 };

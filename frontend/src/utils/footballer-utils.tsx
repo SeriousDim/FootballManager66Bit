@@ -1,10 +1,9 @@
 import {Footballer, FootballerDict} from '../types/footballer';
 import {CountryLoc} from '../types/country';
-import {MenuItem} from '@mui/material';
 
 export function getTableRows(
-  array: FootballerDict, countriesList: CountryLoc, onEdit: (f: Footballer) => void){
-  const result: {[index: number]: ReturnType<typeof transformFootballerToTableRow>} = {};
+  array: FootballerDict, countriesList: CountryLoc, onEdit: (f: Footballer) => void) {
+  const result: { [index: number]: ReturnType<typeof transformFootballerToTableRow> } = {};
 
   Object.values(array).map((item) => {
     if (item.id) {
@@ -23,7 +22,7 @@ export function transformFootballerToTableRow(
     birthDate: f?.birthDate ? new Date(f?.birthDate)?.toLocaleDateString() : '',
     country: countriesList[f?.country],
     editButton: () => onEdit(f)
-  }
+  };
 }
 
 export function countriesToSelectItems(countries: CountryLoc) {
@@ -31,6 +30,6 @@ export function countriesToSelectItems(countries: CountryLoc) {
     return {
       value: key,
       label: countries[key]
-    }
+    };
   });
 }
