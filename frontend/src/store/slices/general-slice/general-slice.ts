@@ -1,4 +1,4 @@
-import {Footballer, FootballerDict} from '../../../types/footballer';
+import {Footballer} from '../../../types/footballer';
 import {createSlice} from '@reduxjs/toolkit';
 import {
   getCountryList,
@@ -19,7 +19,7 @@ const initState: GeneralState = {
   teamList: [],
   countryList: {},
   errorMessage: null
-}
+};
 
 const generalSlice = createSlice({
   name: 'general',
@@ -54,8 +54,8 @@ const generalSlice = createSlice({
 
 export const
   {setFootballerList,
-  setTeamList,
-  setCountryList,
-  setError} = generalSlice.actions;
+    setTeamList,
+    setCountryList,
+    setError} = generalSlice.actions;
 
 export default generalSlice.reducer;

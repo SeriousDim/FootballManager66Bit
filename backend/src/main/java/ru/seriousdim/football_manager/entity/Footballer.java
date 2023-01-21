@@ -32,6 +32,15 @@ public class Footballer {
     public Footballer() {
     }
 
+    public Footballer(String name, String surname, Sex sex, Date birthDate, String team, Country country) {
+        this.name = name;
+        this.surname = surname;
+        this.sex = sex;
+        this.birthDate = birthDate;
+        this.team = team;
+        this.country = country;
+    }
+
     public Long getId() {
         return id;
     }

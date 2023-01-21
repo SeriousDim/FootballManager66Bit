@@ -1,7 +1,11 @@
-import {AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from '@mui/material';
+import {AppBar, Box, Button, Container, Toolbar, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import {AppRoutes} from '../../const/routes';
 
+/**
+ * Хедер с переключателями страниц
+ * @constructor
+ */
 export function Header() {
   const navigate = useNavigate();
 
@@ -21,15 +25,19 @@ export function Header() {
             Каталог футболистов 3.0
           </Typography>
 
-          <Box sx={{flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
             <Button
-              sx={{mx: 1, color: 'white', display: 'block' }}
-              onClick={() => {navigate(AppRoutes.LIST)}}>
+              sx={{mx: 1, color: 'white', display: 'block'}}
+              onClick={() => {
+                navigate(AppRoutes.LIST);
+              }}>
               Список
             </Button>
             <Button
-              sx={{mx: 1, color: 'white', display: 'block' }}
-              onClick={() => {navigate(AppRoutes.ADD)}}>
+              sx={{mx: 1, color: 'white', display: 'block'}}
+              onClick={() => {
+                navigate(AppRoutes.ADD);
+              }}>
               Добавить футболиста
             </Button>
           </Box>

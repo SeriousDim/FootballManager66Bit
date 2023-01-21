@@ -1,6 +1,10 @@
-import {GridColDef, GridValueGetterParams} from '@mui/x-data-grid';
+import {GridColDef} from '@mui/x-data-grid';
 import {Button} from '@mui/material';
 
+/**
+ * Данные колонок для таблицы с футболистами на
+ * странице {@link ListPage}
+ */
 export const COLUMNS: GridColDef[] = [
   {
     field: 'name',
@@ -42,7 +46,7 @@ export const COLUMNS: GridColDef[] = [
           onClick={params.value}>
           Изменить
         </Button>
-      )
+      );
     }
   }
-]
+];

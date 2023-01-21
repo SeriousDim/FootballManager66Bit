@@ -2,6 +2,7 @@ package ru.seriousdim.football_manager.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.seriousdim.football_manager.Routes;
 import ru.seriousdim.football_manager.config.MainConfig;
 import ru.seriousdim.football_manager.entity.Country;
 import ru.seriousdim.football_manager.entity.Footballer;
@@ -17,25 +18,42 @@ import java.util.Map;
 @RequestMapping(MainConfig.HEAD_ROUTE)
 public class CatalogController {
 
-    @Autowired
-    private FootballerRepository repo;
+    private final FootballerRepository repo;
 
-    @GetMapping("/list")
+    @Autowired
+    public CatalogController(final FootballerRepository repo) {
+        this.repo = repo;
+    }
+
+    /**
+     * @return актуальный список футболистов
+     */
+    @GetMapping(Routes.LIST)
     public Iterable<Footballer> getFootballerList() {
         return repo.findAll();
     }
 
-    @PostMapping("/list")
+    /**
+     * @param data данные о новом или существующем футболисте
+     * @return созданные/измененные данные о футболисте
+     */
+    @PostMapping(Routes.LIST)
     public Footballer addFootballer(@RequestBody Footballer data) {
         return repo.save(data);
     }
 
-    @GetMapping("/teams")
+    /**
+     * @return список всех команд от всех футболистов
+     */
+    @GetMapping(Routes.TEAMS)
     public List<String> getTeams() {
         return repo.getUniqueTeams();
     }
 
-    @GetMapping("/countries")
+    /**
+     * @return фиксированный список стран: ключи и названия
+     */
+    @GetMapping(Routes.COUNTRIES)
     public Map<String, String> getCountries() {
         return CatalogUtils.getCountries();
     }

@@ -10,6 +10,10 @@ import java.util.Map;
 
 public class CatalogUtils {
 
+    /**
+     * @return возвращает список стран с ключами и названиями
+     * @see CountryNames
+     */
     public static Map<String, String> getCountries() {
         return CountryNames.toHashMap();
     }

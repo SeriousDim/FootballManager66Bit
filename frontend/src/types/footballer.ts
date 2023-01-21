@@ -10,6 +10,4 @@ export type Footballer = {
   country: string
 };
 
-export type FootballerDict = {[index: number]: Footballer};
-
-export type TableRow = Footballer | {editButton: () => void};
+export type TableRow = Footballer | {editButton: () => void, sex: string};

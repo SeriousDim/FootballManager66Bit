@@ -13,42 +13,53 @@ import {
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {Footballer} from '../../../types/footballer';
 import {Sex} from '../../../types/sex';
-import {useAppDispatch, useAppSelector} from '../../../store/hooks';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import {addFootballerAction, getCountryList, getTeamListAction} from '../../../service/async-actions/general-actions';
-import {countriesToSelectItems} from '../../../utils/footballer-utils';
+import {generateCountrySelectItems} from '../../../utils/footballer-utils';
 import {toast} from 'react-toastify';
 import {DEFAULT_FORM_DATA} from './default-form-data';
 
 export type FootballerFormProps = {
+  /** Текст для кнопки отправки */
   submitButtonText: string,
+  /** Сообщение при успешной отправке */
   successMessage: string,
+  /** Данные по умолчанию для полей формы */
   defaultFormData?: Footballer,
+  /**
+   * Колбэк при отправке
+   * @param f данные футболиста, которые вернет сервер после отправке
+   */
   onSubmit?: (f: Footballer) => void
 }
 
+/**
+ * Форма для создания и редактирования данных
+ * о футболисте
+ *
+ * @param props
+ * @constructor
+ */
 export function FootballerForm(props: FootballerFormProps) {
   const dispatch = useAppDispatch();
   const countryList = useAppSelector((state) => state.general.countryList);
   const teamList = useAppSelector((state) => state.general.teamList);
-  const [countryItems, setCountryItems] = useState<ReturnType<typeof countriesToSelectItems>>([]);
 
-  const [formData, setFormData] = useState<Footballer>(props.defaultFormData || DEFAULT_FORM_DATA);
+  // айтемы с данными стран для выпадающего списка
+  const [countryItems, setCountryItems] =
+    useState<ReturnType<typeof generateCountrySelectItems>>([]);
+
+  const [formData, setFormData] =
+    useState<Footballer>(props.defaultFormData || DEFAULT_FORM_DATA);
 
   useEffect(() => {
     dispatch(getCountryList());
     dispatch(getTeamListAction());
-
-    return;
   }, []);
 
   useEffect(() => {
-    const mounted = true;
-
-    if (mounted) {
-      setCountryItems(countriesToSelectItems(countryList));
-    }
-
-    return;
+    // генерируем айтемы, когда загрузится список стран с сервера
+    setCountryItems(generateCountrySelectItems(countryList));
   }, [countryList]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {

@@ -1,19 +1,28 @@
-import {DataGrid, GridColDef} from '@mui/x-data-grid';
-import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {DataGrid} from '@mui/x-data-grid';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {Fragment, useEffect, useState} from 'react';
 import {getCountryList, getFootballerListAction} from '../../service/async-actions/general-actions';
-import {Footballer, FootballerDict, TableRow} from '../../types/footballer';
-import {getTableRows, transformFootballerToTableRow} from '../../utils/footballer-utils';
+import {Footballer, TableRow} from '../../types/footballer';
+import {generateTableRows, generateTableRow} from '../../utils/footballer-utils';
 import {COLUMNS} from './grid-columns';
 import {Box, Button, Dialog} from '@mui/material';
 import {FootballerForm} from '../../components/forms/footballer-form/footballer-form';
 
+/**
+ * Страница с актуальным списком футболистов
+ * @constructor
+ */
 export function ListPage() {
   const dispatch = useAppDispatch();
 
   const footballers = useAppSelector((state) => state.general.footballerList);
   const countryList = useAppSelector((state) => state.general.countryList);
 
+  /**
+   * Функция, вызываемая при редактировании
+   * информации о футболисте
+   * @param f
+   */
   const onRowEdit = (f: Footballer) => {
     setEditingFootballer(f);
     setOpenedModal(true);
@@ -22,43 +31,23 @@ export function ListPage() {
   const [editingFootballer, setEditingFootballer] = useState<Footballer>();
   const [openedModal, setOpenedModal] = useState(false);
   const [tableRows, setTableRows] =
-    useState<{[index: number]: TableRow}>([]);
+    useState<ReturnType<typeof generateTableRows>>({});
 
   useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      dispatch(getFootballerListAction());
-      dispatch(getCountryList());
-    }
-
-    return;
+    dispatch(getFootballerListAction());
+    dispatch(getCountryList());
   }, []);
 
   useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      if (footballers.length > 0 &&
-          Object.keys(countryList).length > 0) {
-        const footballerDict: FootballerDict = {};
-
-        footballers.map((item) => {
-          if (item.id) {
-            footballerDict[item.id] = item;
-          }
-        });
-
-        setTableRows(
-          getTableRows(
-            footballerDict,
-            countryList,
-            onRowEdit
-            ));
-      }
+    if (footballers.length > 0 &&
+      Object.keys(countryList).length > 0) {
+      setTableRows(
+        generateTableRows(
+          footballers,
+          countryList,
+          onRowEdit
+        ));
     }
-
-    return;
   }, [footballers, countryList]);
 
   return (
@@ -72,15 +61,16 @@ export function ListPage() {
       <Dialog
         open={openedModal}>
         <FootballerForm
-          submitButtonText={"Изменить"}
-          successMessage={"Информация изменена"}
+          submitButtonText={'Изменить'}
+          successMessage={'Информация изменена'}
           defaultFormData={editingFootballer}
           onSubmit={(changedData) => {
             setOpenedModal(false);
             if (changedData.id) {
               tableRows[changedData.id] =
-                transformFootballerToTableRow(changedData, countryList, onRowEdit);
+                generateTableRow(changedData, countryList, onRowEdit);
               setTableRows(tableRows);
+              setEditingFootballer(undefined);
             }
           }}/>
         <Button
