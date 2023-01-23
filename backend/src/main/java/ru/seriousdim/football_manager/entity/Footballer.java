@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = Footballer.TABLE_NAME)
@@ -32,13 +33,34 @@ public class Footballer {
     public Footballer() {
     }
 
-    public Footballer(String name, String surname, Sex sex, Date birthDate, String team, Country country) {
+    public Footballer(Long id, String name, String surname, Sex sex, Date birthDate, String team, Country country) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.sex = sex;
         this.birthDate = birthDate;
         this.team = team;
         this.country = country;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Footballer)) return false;
+        Footballer that = (Footballer) o;
+        return getId().equals(
+                that.getId()) &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getSurname(), that.getSurname()) &&
+                getSex() == that.getSex() &&
+                getBirthDate().equals(that.getBirthDate()) &&
+                Objects.equals(getTeam(), that.getTeam()) &&
+                getCountry() == that.getCountry();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSurname(), getSex(), getBirthDate(), getTeam(), getCountry());
     }
 
     public Long getId() {
