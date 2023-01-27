@@ -1,8 +1,12 @@
 package ru.seriousdim.football_manager.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import ru.seriousdim.football_manager.Routes;
+import ru.seriousdim.football_manager.WebSocketRoutes;
 import ru.seriousdim.football_manager.config.MainConfig;
 import ru.seriousdim.football_manager.entity.Country;
 import ru.seriousdim.football_manager.entity.Footballer;
@@ -56,6 +60,12 @@ public class CatalogController {
     @GetMapping(Routes.COUNTRIES)
     public Map<String, String> getCountries() {
         return CatalogUtils.getCountries();
+    }
+
+    @MessageMapping(WebSocketRoutes.POST_FOOTBALLERS)
+    @SendTo(MainConfig.WEBSOCKET_HEAD_ROUTE + WebSocketRoutes.REFRESH)
+    public Footballer addAndRefreshFootballer(@Payload Footballer footballer) {
+        return repo.save(footballer);
     }
 
 }
