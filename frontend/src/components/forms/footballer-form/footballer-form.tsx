@@ -14,7 +14,12 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {Footballer} from '../../../types/footballer';
 import {Sex} from '../../../types/sex';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {addFootballerAction, getCountryList, getTeamListAction} from '../../../service/async-actions/general-actions';
+import {
+  addFootballerAction,
+  addFootballerActionWs,
+  getCountryList,
+  getTeamListAction
+} from '../../../service/async-actions/general-actions';
 import {generateCountrySelectItems} from '../../../utils/footballer-utils';
 import {toast} from 'react-toastify';
 import {DEFAULT_FORM_DATA} from './default-form-data';
@@ -65,6 +70,7 @@ export function FootballerForm(props: FootballerFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    /*
     dispatch(addFootballerAction(formData))
       .then((response) => {
         toast.success(props.successMessage);
@@ -73,6 +79,8 @@ export function FootballerForm(props: FootballerFormProps) {
           props?.onSubmit(response.payload as Footballer);
         }
       });
+     */
+    dispatch(addFootballerActionWs(formData));
   };
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
