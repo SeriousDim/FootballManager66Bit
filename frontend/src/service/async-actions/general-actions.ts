@@ -1,9 +1,8 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {Footballer} from '../../types/footballer';
-import {Generics, GenericsWs} from '../../types/thunk-generics';
+import {Generics} from '../../types/thunk-generics';
 import {BackendCatalogRoutes} from '../../const/routes';
 import {CountryLoc} from '../../types/country';
-import {EVENT_POST_FOOTBALLER} from '../../const/api-config';
 
 export const getFootballerListAction =
   createAsyncThunk<Array<Footballer>, undefined, Generics>(
@@ -20,14 +19,6 @@ export const addFootballerAction =
       const result = await api.post(BackendCatalogRoutes.LIST, arg);
       return result.data;
     });
-
-export const addFootballerActionWs =
-  createAsyncThunk<void, Footballer, GenericsWs>(
-    'ws/catalog/add',
-    async (arg, {extra: stompClient}) => {
-      stompClient.send(EVENT_POST_FOOTBALLER, {}, JSON.stringify(arg));
-    }
-  );
 
 export const getTeamListAction =
   createAsyncThunk<string[], undefined, Generics>(
