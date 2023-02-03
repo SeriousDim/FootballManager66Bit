@@ -1,5 +1,5 @@
 import {store} from '../store/store';
-import {setError} from '../store/slices/general-slice/general-slice';
+import {setError} from '../store/general-slice/general-slice';
 import {toast} from 'react-toastify';
 
 export const processErrorHandler = (message: string) => {

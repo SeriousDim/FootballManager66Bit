@@ -1,11 +1,11 @@
-import {Footballer} from '../../../types/footballer';
+import {Footballer} from '../../types/footballer';
 import {createSlice} from '@reduxjs/toolkit';
 import {
   getCountryList,
   getFootballerListAction,
   getTeamListAction
-} from '../../../service/async-actions/general-actions';
-import {CountryLoc} from '../../../types/country';
+} from '../../service/async-actions/general-actions';
+import {CountryLoc} from '../../types/country';
 
 interface GeneralState {
   footballerList: Footballer[],
@@ -22,11 +22,14 @@ const initState: GeneralState = {
 };
 
 const generalSlice = createSlice({
-  name: 'general',
+  name: 'generalState',
   initialState: initState,
   reducers: {
     setFootballerList(state, action) {
       state.footballerList = action.payload;
+    },
+    appendFootballer(state, action) {
+      state.footballerList.push(action.payload);
     },
     setTeamList(state, action) {
       state.teamList = action.payload;
@@ -54,6 +57,7 @@ const generalSlice = createSlice({
 
 export const
   {setFootballerList,
+    appendFootballer,
     setTeamList,
     setCountryList,
     setError} = generalSlice.actions;

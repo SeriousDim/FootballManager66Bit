@@ -15,5 +15,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(MainConfig.FRONTEND_URLS)
                 .allowedMethods("*");
     }
-
 }

@@ -14,10 +14,14 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {Footballer} from '../../../types/footballer';
 import {Sex} from '../../../types/sex';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {addFootballerAction, getCountryList, getTeamListAction} from '../../../service/async-actions/general-actions';
+import {
+  getCountryList,
+  getTeamListAction
+} from '../../../service/async-actions/general-actions';
 import {generateCountrySelectItems} from '../../../utils/footballer-utils';
-import {toast} from 'react-toastify';
 import {DEFAULT_FORM_DATA} from './default-form-data';
+import {EVENT_POST_FOOTBALLER} from '../../../const/api-config';
+import stompClient from '../../../service/websocket';
 
 export type FootballerFormProps = {
   /** Текст для кнопки отправки */
@@ -65,14 +69,7 @@ export function FootballerForm(props: FootballerFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    dispatch(addFootballerAction(formData))
-      .then((response) => {
-        toast.success(props.successMessage);
-
-        if (props.onSubmit) {
-          props?.onSubmit(response.payload as Footballer);
-        }
-      });
+    stompClient.send(EVENT_POST_FOOTBALLER, {}, JSON.stringify(formData));
   };
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {

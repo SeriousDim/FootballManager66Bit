@@ -1,4 +1,4 @@
-import {Footballer} from '../types/footballer';
+import {Footballer, TableRowInfo} from '../types/footballer';
 import {CountryLoc} from '../types/country';
 
 /**
@@ -29,7 +29,10 @@ export function generateTableRows(
  * @return объект строки таблицы
  */
 export function generateTableRow(
-  f: Footballer, countriesList: CountryLoc, onEdit: (f: Omit<Footballer, 'id'>) => void) {
+  f: Footballer,
+  countriesList: CountryLoc,
+  onEdit: (f: Omit<Footballer, 'id'>) => void)
+  : TableRowInfo {
   return {
     ...f,
     sex: f?.sex === 'MALE' ? 'М' : 'Ж',

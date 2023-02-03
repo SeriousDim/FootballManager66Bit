@@ -10,4 +10,9 @@ export type Footballer = {
   country: string
 };
 
-export type TableRow = Footballer | {editButton: () => void, sex: string};
+export type TableRowInfo = Footballer | {
+  editButton: () => void,
+  sex: string,
+  birthDate: string,
+  country: string
+};
